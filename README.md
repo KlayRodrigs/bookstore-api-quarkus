@@ -3,23 +3,21 @@
 Welcome to the **Bookstore API**, a simple and efficient API for managing your book collection. This API allows you to easily add and retrieve books from your collection.
 
 ## ✨ Features
-- **Get Books**: Retrieve a list of all books in the collection.
-- **Get Book by ID**: Retrieve a specific book using its ID.
-- **Add Book**: Add a new book to your collection.
-- **Update Book**: Update the details of an existing book.
-- **Delete Book**: Remove a book from your collection.
+- **CRUD Book**
+- **CRUD User**
+
 
 ## 🚀 Installation
 
 To get started with the Bookstore API, follow these steps:
 
-1. Clone the repository:
+#### 1. Clone the repository:
    ```bash
    git clone https://github.com/KlayRodrigs/bookstore-api-quarkus.git
    cd bookstore-api
    ./mvnw install
    ```
-2. Configure the application.properties
+#### 2. Configure the application.properties
 ```
 quarkus.http.port=${PORT:8081}
 quarkus.datasource.db-kind=postgresql
@@ -31,22 +29,28 @@ quarkus.hibernate-orm.database.generation=update
 quarkus.datasource.jdbc.extended-leak-report = true
 
 ```
-3. Create the database and table using postgresql. Remember that:
+#### 3. Create the database and table using postgresql. Remember that:
 Queries need to have the same name than table. Example:
 
 ```
 SELECT isbn, title, author, published_date, publisher, description, quantity FROM TABLE_NAME;
 ```
 
-3. Run project
+#### 4. Run project
+
+## 🛠️ Testing the API
+We recommend using tools like [Insomnia](https://insomnia.rest/) or [Postman](https://www.postman.com/) to test the API requests easily.
+
 ## 📖 Usage
 
-Get Books
-To retrieve books/book, send a GET request to:
+Getters 
+To retrieve all data, send a GET request to:
 
 ```
 GET /book
 GET /book/{id}
+GET /user
+GET /user/{id}
 ```
 
 Add a New Book/Books
@@ -64,7 +68,25 @@ POST /book
     "quantity": 10
   }
 ]
-
+```
+Add a New User/Users
+To add a new User/Users, send a POST request with the details:
+```
+POST /user
+[
+  {
+    "cpf": "12345678901",
+    "email": "joao.silva@email.com",
+    "name": "João Silva",
+    "phone": "11987654321",
+    "street": "Rua das Flores",
+    "house_number": "123",
+    "neighborhood": "Centro",
+    "postal_code": "01001000",
+    "city": "São Paulo",
+    "state": "SP"
+  }
+]
 ```
 Edit the Book:
 ```
@@ -78,13 +100,27 @@ PUT /book/{id}
   "description": "One of the most beloved novels in English literature, focusing on the story of Elizabeth Bennet and her relationship with the proud Mr. Darcy.",
   "quantity": 100 <- FIELD THAT YOU WANT TO CHANGE 
 }
-
-
 ```
-
-Delete the Book:
+Edit the User:
+```
+PUT /user/{id}
+{
+  "cpf": "12345678901",
+  "email": "joao.silva@email.com",
+  "name": "João Silva",
+  "phone": "11987654321",
+  "street": "Rua das Flores",
+  "house_number": "123",
+  "neighborhood": "South", <- FIELD THAT YOU WANT TO CHANGE 
+  "postal_code": "01001000",
+  "city": "São Paulo",
+  "state": "SP"
+}
+```
+Deletes endpoint:
 ```
 DELETE /book/{id}
+DELETE /user/{id}
 ```
 
 🛠️ Technologies Used
