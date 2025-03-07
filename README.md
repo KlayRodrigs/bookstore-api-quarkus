@@ -4,7 +4,10 @@ Welcome to the **Bookstore API**, a simple and efficient API for managing your b
 
 ## ✨ Features
 - **Get Books**: Retrieve a list of all books in the collection.
+- **Get Book by ID**: Retrieve a specific book using its ID.
 - **Add Book**: Add a new book to your collection.
+- **Update Book**: Update the details of an existing book.
+- **Delete Book**: Remove a book from your collection.
 
 ## 🚀 Installation
 
@@ -38,16 +41,34 @@ SELECT isbn, title, author, published_date, publisher, description, quantity FRO
 3. Run project
 ## 📖 Usage
 
-Get All Books
-To retrieve all books, send a GET request to:
+Get Books
+To retrieve books/book, send a GET request to:
 
 ```
-GET /books
+GET /book
+GET /book/{id}
 ```
 
-Add a New Book
-To add a new book, send a POST request with the book details:
+Add a New Book/Books
+To add a new book/books, send a POST request with the details:
 ```
+POST /book
+[
+  {
+    "isbn": "978-0-7432-7359-9",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "published_date": "1813-01-28",
+    "publisher": "T. Egerton",
+    "description": "One of the most beloved novels in English literature, focusing on the story of Elizabeth Bennet and her relationship with the proud Mr. Darcy.",
+    "quantity": 10
+  }
+]
+
+```
+Edit the Book:
+```
+PUT /book/{id}
 {
   "isbn": "978-0-7432-7359-9",
   "title": "Pride and Prejudice",
@@ -55,10 +76,17 @@ To add a new book, send a POST request with the book details:
   "published_date": "1813-01-28",
   "publisher": "T. Egerton",
   "description": "One of the most beloved novels in English literature, focusing on the story of Elizabeth Bennet and her relationship with the proud Mr. Darcy.",
-  "quantity": 100
+  "quantity": 100 <- FIELD THAT YOU WANT TO CHANGE 
 }
 
+
 ```
+
+Delete the Book:
+```
+DELETE /book/{id}
+```
+
 🛠️ Technologies Used
 ```
 Quarkus: The Supersonic Subatomic Java Framework.
