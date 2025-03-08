@@ -4,75 +4,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 
-@Entity
+@Data
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String isbn;
     private String title;
     private String description;
+    private String category;
     private String author;
     private String publisher;
-    private Date published_date;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setPublished_date(Date published_date) {
-        this.published_date = published_date;
-    }
-
-    public Date getPublished_date() {
-        return published_date;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
+    private Date publishedDate;
 }

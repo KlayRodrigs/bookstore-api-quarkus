@@ -2,6 +2,7 @@ package org.acme.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.acme.dtos.BookDTO;
 import org.acme.entities.Book;
 import org.acme.repositories.BookRepository;
 
@@ -17,20 +18,19 @@ public class BookService {
         return bookRepository.getBooks();
     }
 
-    public void addBooks(List<Book> books) throws SQLException {
-        bookRepository.addBooksOrBook(books);
+    public void saveBook(BookDTO bookDTO) throws SQLException {
+        bookRepository.saveBook(bookDTO);
     }
 
-    public void updateBook(long id, Book book) throws SQLException {
-        book.setId(id);
-        bookRepository.updateBook(book);
+    public void updateBook(Long id, BookDTO bookDTO) throws SQLException {
+        bookRepository.updateBook(id, bookDTO);
     }
 
-    public void deleteBook(long id) throws SQLException {
+    public void deleteBook(Long id) throws SQLException {
         bookRepository.deleteBook(id);
     }
 
-    public Book getBookById(long id) throws SQLException {
+    public Book getBookById(Long id) throws SQLException {
         return bookRepository.getBookById(id);
     }
 }
