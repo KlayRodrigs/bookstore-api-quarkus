@@ -32,7 +32,6 @@ public class BookRepository {
                 book.setPublished_date(rs.getDate("published_date"));
                 book.setPublisher(rs.getString("publisher"));
                 book.setDescription(rs.getString("description"));
-                book.setQuantity(rs.getInt("quantity"));
                 books.add(book);
             }
         }
@@ -61,7 +60,6 @@ public class BookRepository {
                     }
                     stmt.setString(6, book.getPublisher());
                     stmt.setString(7, book.getDescription());
-                    stmt.setInt(8, book.getQuantity());
                     stmt.addBatch();
                 }
                 stmt.executeBatch();
@@ -77,7 +75,6 @@ public class BookRepository {
                 }
                 stmt.setString(6, book.getPublisher());
                 stmt.setString(7, book.getDescription());
-                stmt.setInt(8, book.getQuantity());
                 stmt.executeUpdate();
             }
         }
@@ -98,7 +95,6 @@ public class BookRepository {
             }
             stmt.setString(5, book.getPublisher());
             stmt.setString(6, book.getDescription());
-            stmt.setInt(7, book.getQuantity());
             stmt.setLong(8, book.getId());
             stmt.executeUpdate();
         }
@@ -131,7 +127,6 @@ public class BookRepository {
                     book.setPublished_date(rs.getDate("published_date"));
                     book.setPublisher(rs.getString("publisher"));
                     book.setDescription(rs.getString("description"));
-                    book.setQuantity(rs.getInt("quantity"));
                 }
             }
         }

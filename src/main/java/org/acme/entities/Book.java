@@ -17,9 +17,8 @@ public class Book {
     private String title;
     private String description;
     private String author;
-    private Date published_date;
     private String publisher;
-    private int quantity;
+    private Date published_date;
 
     public long getId() {
         return id;
@@ -75,13 +74,5 @@ public class Book {
 
     public String getPublisher() {
         return publisher;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getQuantity() {
-        return quantity;
     }
 }
