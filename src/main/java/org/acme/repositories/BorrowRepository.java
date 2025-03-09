@@ -15,6 +15,19 @@ public class BorrowRepository {
     @Inject
     private DataSource dataSource;
 
+    public int countBorrows() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM borrows";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            var rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
     public List<Borrow> getAllBorrows() throws SQLException {
         List<Borrow> borrows = new ArrayList<>();
 

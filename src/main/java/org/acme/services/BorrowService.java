@@ -25,6 +25,9 @@ public class BorrowService {
     @Inject
     private BookService bookService;
 
+    public int countBorrows() throws SQLException {
+        return borrowRepository.countBorrows();
+    }
 
     public List<Borrow> getAllBorrows() throws SQLException {
         return borrowRepository.getAllBorrows();

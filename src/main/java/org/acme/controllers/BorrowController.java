@@ -16,6 +16,7 @@ import org.acme.services.UserService;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Path("/borrows")
@@ -28,6 +29,22 @@ public class BorrowController {
 
     @Inject
     BookService bookService;
+
+    @GET
+    @Path("/count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response countBorrow() {
+        try {
+            var borrowCount = userService.countUsers();
+            var response = new HashMap<>();
+            response.put("borrowCount", borrowCount);
+            return Response.ok(response).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Error when counting borrows")
+                    .build();
+        }
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
