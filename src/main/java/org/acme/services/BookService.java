@@ -8,18 +8,28 @@ import org.acme.repositories.BookRepository;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class BookService {
     @Inject
     BookRepository bookRepository;
 
+    public Book getBookById(Long id) throws SQLException {
+        return bookRepository.getBookById(id);
+    }
+
+    public Optional<Book> getBookByIsbn(String isbn) throws SQLException {
+        return Optional.of(bookRepository.getBookByIsbn(isbn));
+    }
+
     public List<Book> getBooks() throws SQLException {
         return bookRepository.getBooks();
     }
 
-    public void saveBook(BookDTO bookDTO) throws SQLException {
-        bookRepository.saveBook(bookDTO);
+    public Long saveBook(BookDTO bookDTO) throws SQLException {
+        Long newBookId = bookRepository.saveBook(bookDTO);
+        return newBookId;
     }
 
     public void updateBook(Long id, BookDTO bookDTO) throws SQLException {
@@ -28,9 +38,5 @@ public class BookService {
 
     public void deleteBook(Long id) throws SQLException {
         bookRepository.deleteBook(id);
-    }
-
-    public Book getBookById(Long id) throws SQLException {
-        return bookRepository.getBookById(id);
     }
 }

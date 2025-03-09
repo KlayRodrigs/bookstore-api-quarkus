@@ -53,14 +53,39 @@ public class UserRepository {
         }
     }
 
-    public void saveUser(UserDTO userDTO) throws SQLException {
+    public User getUserByCpf(String cpf) throws SQLException {
+        String sql = "SELECT id, cpf, email, name, phone, street, house_number, neighborhood, postal_code, city, state " +
+                     "FROM users WHERE cpf = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+           stmt.setString(1, cpf);
+           var rs = stmt.executeQuery();
+           if (rs.next()) {
+               return getUserFromResultSet(rs);
+           } else {
+               return null;
+           }
+        }
+
+    }
+
+    public Long saveUser(UserDTO userDTO) throws SQLException {
         String sql = "INSERT INTO users (cpf, email, name, phone, street, house_number, neighborhood, postal_code, city, state) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = dataSource.getConnection()) {
             var stmt = this.createUser(userDTO, connection, sql);
-            stmt.executeUpdate();
+            int insertedRows = stmt.executeUpdate();
+            if (insertedRows > 0) {
+                var rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    Long newUserId = rs.getLong(1);
+                    return newUserId;
+                }
+            }
         }
+        return null;
     }
 
     public void updateUser(Long id, UserDTO userDTO) throws SQLException {
@@ -105,7 +130,7 @@ public class UserRepository {
     }
 
     private PreparedStatement createUser(UserDTO userDTO, Connection connection, String sql) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement(sql);
+        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         stmt.setString(1, userDTO.cpf());
         stmt.setString(2, userDTO.email());

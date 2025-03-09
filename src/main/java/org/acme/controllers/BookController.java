@@ -11,6 +11,7 @@ import org.acme.services.BookService;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/books")
 public class BookController {
@@ -57,8 +58,13 @@ public class BookController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response saveBook(BookDTO bookDTO) {
         try {
-            bookService.saveBook(bookDTO);
-            return Response.status(Response.Status.CREATED).entity(bookDTO).build();
+            Long newBookId = bookService.saveBook(bookDTO);
+            if (newBookId == null) {
+                throw new SQLException();
+            }
+            BookDTO response = BookDTO.fromBook(bookService.getBookById(newBookId));
+            return Response.status(Response.Status.CREATED).entity(response).build();
+
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error when adding the books: " + e.getMessage())
@@ -73,7 +79,8 @@ public class BookController {
     public Response updateBook(@PathParam("id") Long id, BookDTO bookDTO) {
         try {
             bookService.updateBook(id, bookDTO);
-            return Response.ok(bookDTO).build();
+            BookDTO response = BookDTO.fromBook(bookService.getBookById(id));
+            return Response.ok(response).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error when updating the book: " + e.getMessage())

@@ -5,19 +5,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
-public class Book {
+public class Borrow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String isbn;
-    private String title;
-    private String description;
-    private String category;
-    private String author;
-    private String publisher;
-    private Date publishedDate;
+    private Long userId;
+    private Long bookId;
+    private LocalDate date;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
 }

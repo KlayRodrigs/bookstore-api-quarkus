@@ -36,10 +36,9 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("id") Long id) {
         try {
-            Optional<User> userOpt = userService.getUserById(id);
+            User user = userService.getUserById(id);
 
-            if (userOpt.isPresent()) {
-                User user = userOpt.get();
+            if (user != null) {
                 UserDTO response = UserDTO.fromUser(user);
                 return Response.ok(response).build();
             } else {
@@ -59,8 +58,12 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response saveUser(UserDTO userDTO) {
         try {
-            userService.saveUser(userDTO);
-            return Response.status(Response.Status.CREATED).entity(userDTO).build();
+            Long newUserId = userService.saveUser(userDTO);
+            if (newUserId == null) {
+                throw new SQLException();
+            }
+            UserDTO response = UserDTO.fromUser(userService.getUserById(newUserId));
+            return Response.status(Response.Status.CREATED).entity(response).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error when adding the users: " + e.getMessage())
@@ -75,7 +78,8 @@ public class UserController {
     public Response updateUser(@PathParam("id") Long id, UserDTO userDTO) {
         try {
             userService.updateUser(id, userDTO);
-            return Response.ok(userDTO).build();
+            UserDTO response = UserDTO.fromUser(userService.getUserById(id));
+            return Response.ok(response).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Error when updating the user: " + e.getMessage())

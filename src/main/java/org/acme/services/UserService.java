@@ -19,12 +19,17 @@ public class UserService {
         return userRepository.getUsers();
     }
 
-    public Optional<User> getUserById(Long id) throws SQLException {
-        return Optional.of(userRepository.getUserById(id));
+    public User getUserById(Long id) throws SQLException {
+        return userRepository.getUserById(id);
     }
 
-    public void saveUser(UserDTO userDTO) throws SQLException {
-        userRepository.saveUser(userDTO);
+    public Optional<User> getUserByCpf(String cpf) throws SQLException {
+        return Optional.of(userRepository.getUserByCpf(cpf));
+    }
+
+    public Long saveUser(UserDTO userDTO) throws SQLException {
+        Long newUserId = userRepository.saveUser(userDTO);
+        return newUserId;
     }
 
     public void updateUser(Long id, UserDTO userDTO) throws SQLException {

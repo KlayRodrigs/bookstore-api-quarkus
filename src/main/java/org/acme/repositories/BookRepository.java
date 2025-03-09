@@ -15,8 +15,8 @@ public class BookRepository {
     @Inject
     protected DataSource dataSource;
 
-    public Book getBookById(long id) throws SQLException {
-        String sql = "SELECT isbn, title, author, published_date, publisher, description, category " +
+    public Book getBookById(Long id) throws SQLException {
+        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category " +
                      "FROM books " +
                      "WHERE id = ?";
 
@@ -35,10 +35,30 @@ public class BookRepository {
         return book;
     }
 
+    public Book getBookByIsbn(String isbn) throws SQLException {
+        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category " +
+                     "FROM books " +
+                     "WHERE isbn = ?";
+
+        Book book = null;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    book = this.getBookFromResultSet(rs);
+                }
+            }
+        }
+
+        return book;
+    }
+
     public List<Book> getBooks() throws SQLException {
         List<Book> books = new ArrayList<>();
 
-        String sql = "SELECT isbn, title, author, published_date, publisher, description, category " +
+        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category " +
                      "FROM books";
 
         try (Connection connection = dataSource.getConnection();
@@ -53,15 +73,23 @@ public class BookRepository {
         return books;
     }
 
-    public void saveBook(BookDTO bookDTO) throws SQLException {
+    public Long saveBook(BookDTO bookDTO) throws SQLException {
         String sql = "INSERT INTO books (isbn, title, author, published_date, publisher, description, category) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = dataSource.getConnection()) {
 
             var stmt = this.createBook(bookDTO, connection, sql);
-            stmt.executeUpdate();
+            int insertedRow = stmt.executeUpdate();
+            if (insertedRow > 0) {
+                var rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    Long id = rs.getLong(1);
+                    return id;
+                }
+            }
         }
+        return null;
     }
 
     public void updateBook(Long id, BookDTO bookDTO) throws SQLException {
@@ -78,7 +106,7 @@ public class BookRepository {
         }
     }
 
-    public void deleteBook(long id) throws SQLException {
+    public void deleteBook(Long id) throws SQLException {
         String sql = "DELETE FROM books " +
                      "WHERE id = ?";
 
@@ -97,6 +125,7 @@ public class BookRepository {
         }
 
         Book book = new Book();
+        book.setId(rs.getLong("id"));
         book.setIsbn(rs.getString("isbn"));
         book.setTitle(rs.getString("title"));
         book.setAuthor(rs.getString("author"));
@@ -109,7 +138,7 @@ public class BookRepository {
     }
 
     private PreparedStatement createBook(BookDTO bookDTO, Connection connection, String sql) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement(sql);
+        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         stmt.setString(1, bookDTO.isbn());
         stmt.setString(2, bookDTO.title());
