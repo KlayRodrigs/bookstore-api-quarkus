@@ -9,14 +9,28 @@ import org.acme.entities.Book;
 import org.acme.services.BookService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Path("/books")
 public class BookController {
     @Inject
     BookService bookService;
+
+    @GET
+    @Path("/count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response countBooks() {
+        try {
+            var bookCount = bookService.countBooks();
+            var response = new HashMap<>();
+            response.put("bookCount", bookCount);
+            return Response.ok(response).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Error when counting books")
+                    .build();
+        }
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

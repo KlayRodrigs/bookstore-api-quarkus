@@ -15,6 +15,10 @@ public class BookService {
     @Inject
     BookRepository bookRepository;
 
+    public int countBooks() throws SQLException {
+        return bookRepository.countBooks();
+    }
+
     public Book getBookById(Long id) throws SQLException {
         return bookRepository.getBookById(id);
     }
