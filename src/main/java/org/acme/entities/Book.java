@@ -20,4 +20,5 @@ public class Book {
     private String author;
     private String publisher;
     private Date publishedDate;
+    private String imageUrl;
 }

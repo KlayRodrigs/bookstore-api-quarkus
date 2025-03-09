@@ -29,7 +29,7 @@ public class BookRepository {
     }
 
     public Book getBookById(Long id) throws SQLException {
-        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category " +
+        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category, image_url " +
                      "FROM books " +
                      "WHERE id = ?";
 
@@ -49,7 +49,7 @@ public class BookRepository {
     }
 
     public Book getBookByIsbn(String isbn) throws SQLException {
-        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category " +
+        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category, image_url " +
                      "FROM books " +
                      "WHERE isbn = ?";
 
@@ -71,7 +71,7 @@ public class BookRepository {
     public List<Book> getBooks() throws SQLException {
         List<Book> books = new ArrayList<>();
 
-        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category " +
+        String sql = "SELECT id, isbn, title, author, published_date, publisher, description, category, image_url " +
                      "FROM books";
 
         try (Connection connection = dataSource.getConnection();
@@ -87,8 +87,8 @@ public class BookRepository {
     }
 
     public Long saveBook(BookDTO bookDTO) throws SQLException {
-        String sql = "INSERT INTO books (isbn, title, author, published_date, publisher, description, category) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO books (isbn, title, author, published_date, publisher, description, category, image_url) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = dataSource.getConnection()) {
 
@@ -107,14 +107,14 @@ public class BookRepository {
 
     public void updateBook(Long id, BookDTO bookDTO) throws SQLException {
         String sql = "UPDATE books " +
-                     "SET isbn = ?, title = ?, author = ?, published_date = ?, publisher = ?, description = ?, category = ? " +
+                     "SET isbn = ?, title = ?, author = ?, published_date = ?, publisher = ?, description = ?, category = ?, image_url = ? " +
                      "WHERE id = ?";
 
         try (Connection connection = dataSource.getConnection()) {
 
             var stmt = this.createBook(bookDTO, connection, sql);
 
-            stmt.setLong(8, id);
+            stmt.setLong(9, id);
             stmt.executeUpdate();
         }
     }
@@ -146,6 +146,7 @@ public class BookRepository {
         book.setPublisher(rs.getString("publisher"));
         book.setDescription(rs.getString("description"));
         book.setCategory(rs.getString("category"));
+        book.setImageUrl(rs.getString("image_url"));
 
         return book;
     }
@@ -160,6 +161,7 @@ public class BookRepository {
         stmt.setString(5, bookDTO.publisher());
         stmt.setString(6, bookDTO.description());
         stmt.setString(7, bookDTO.category());
+        stmt.setString(8, bookDTO.imageUrl());
 
         return stmt;
     }
