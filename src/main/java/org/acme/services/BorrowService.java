@@ -2,7 +2,6 @@ package org.acme.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Path;
 import org.acme.dtos.BorrowDTO;
 import org.acme.entities.Book;
 import org.acme.entities.Borrow;
