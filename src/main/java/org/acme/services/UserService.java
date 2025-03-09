@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.acme.dtos.UserDTO;
 import org.acme.entities.User;
+import org.acme.repositories.BookRepository;
 import org.acme.repositories.UserRepository;
 
 import java.sql.SQLException;
@@ -14,6 +15,10 @@ import java.util.Optional;
 public class UserService {
     @Inject
     UserRepository userRepository;
+
+    public int countUsers() throws SQLException {
+        return userRepository.countUsers();
+    }
 
     public List<User> getUsers() throws SQLException {
         return userRepository.getUsers();

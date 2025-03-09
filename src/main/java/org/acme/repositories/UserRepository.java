@@ -15,6 +15,19 @@ public class UserRepository {
     @Inject
     protected DataSource dataSource;
 
+    public int countUsers() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM users";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            var rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
     public List<User> getUsers() throws SQLException {
         List<User> userList = new ArrayList<>();
 

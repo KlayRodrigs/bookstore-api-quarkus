@@ -9,6 +9,7 @@ import org.acme.entities.User;
 import org.acme.services.UserService;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,22 @@ import java.util.Optional;
 public class UserController {
     @Inject
     UserService userService;
+
+    @GET
+    @Path("/count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response countUsers() {
+        try {
+            var userCount = userService.countUsers();
+            var response = new HashMap<>();
+            response.put("userCount", userCount);
+            return Response.ok(response).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Error when counting users")
+                    .build();
+        }
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
