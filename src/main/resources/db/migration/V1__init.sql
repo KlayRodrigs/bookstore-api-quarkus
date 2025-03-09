@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS book
+CREATE TABLE IF NOT EXISTS books
 (
     id             SERIAL PRIMARY KEY,
     isbn           VARCHAR(17) UNIQUE NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS book
     published_date DATE
 );
 
-CREATE TABLE IF NOT EXISTS "user"
+CREATE TABLE IF NOT EXISTS users
 (
     id           SERIAL PRIMARY KEY,
     cpf          CHAR(11) UNIQUE     NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "user"
 );
 
 
-CREATE TABLE IF NOT EXISTS borrow
+CREATE TABLE IF NOT EXISTS borrows
 (
     id          SERIAL PRIMARY KEY,
     user_id     INT  NOT NULL,
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS borrow
     due_date    DATE NOT NULL,
     return_date DATE,
 
-    FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE RESTRICT,
-    FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE RESTRICT
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT,
+    FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS reservation
@@ -46,6 +46,6 @@ CREATE TABLE IF NOT EXISTS reservation
     book_id INT  NOT NULL,
     date    DATE NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE RESTRICT,
-    FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE RESTRICT
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT,
+    FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE RESTRICT
 );

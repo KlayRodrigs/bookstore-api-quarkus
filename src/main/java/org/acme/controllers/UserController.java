@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-@Path("/user")
+@Path("/users")
 public class UserController {
     @Inject
     UserService userService;

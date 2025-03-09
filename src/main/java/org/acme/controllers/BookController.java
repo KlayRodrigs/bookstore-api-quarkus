@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/book")
+@Path("/books")
 public class BookController {
     @Inject
     BookService bookService;

@@ -17,7 +17,7 @@ public class BookRepository {
 
     public Book getBookById(long id) throws SQLException {
         String sql = "SELECT isbn, title, author, published_date, publisher, description, category " +
-                     "FROM book " +
+                     "FROM books " +
                      "WHERE id = ?";
 
         Book book = null;
@@ -39,7 +39,7 @@ public class BookRepository {
         List<Book> books = new ArrayList<>();
 
         String sql = "SELECT isbn, title, author, published_date, publisher, description, category " +
-                     "FROM book";
+                     "FROM books";
 
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql);
@@ -54,7 +54,7 @@ public class BookRepository {
     }
 
     public void saveBook(BookDTO bookDTO) throws SQLException {
-        String sql = "INSERT INTO book (isbn, title, author, published_date, publisher, description, category) " +
+        String sql = "INSERT INTO books (isbn, title, author, published_date, publisher, description, category) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = dataSource.getConnection()) {
@@ -65,7 +65,7 @@ public class BookRepository {
     }
 
     public void updateBook(Long id, BookDTO bookDTO) throws SQLException {
-        String sql = "UPDATE book " +
+        String sql = "UPDATE books " +
                      "SET isbn = ?, title = ?, author = ?, published_date = ?, publisher = ?, description = ?, category = ? " +
                      "WHERE id = ?";
 
@@ -79,7 +79,7 @@ public class BookRepository {
     }
 
     public void deleteBook(long id) throws SQLException {
-        String sql = "DELETE FROM book " +
+        String sql = "DELETE FROM books " +
                      "WHERE id = ?";
 
         try (Connection connection = dataSource.getConnection();
